@@ -2,6 +2,7 @@ import networkx as nx
 
 # Import Graph
 G = nx.karate_club_graph()
+nx.draw(G, with_labels=True)
 
 # Average degree
 def avg_degree(num_edges, num_nodes):
@@ -29,6 +30,8 @@ def one_iter_pagerank(G, beta, r0, node_id):
         r1 += beta * r0/node_deg + (1 - beta)/N 
     
     return round(r1,2) 
+
+# 
 
 beta = 0.8
 r0 = 1 / G.number_of_nodes()
