@@ -19,9 +19,27 @@ def avg_coefficient(G):
 
     return avg_cluster_coef
 
+# Demo PageRank Equation
+def one_iter_pagerank(G, beta, r0, node_id):
+
+    r1 = 0
+    N = G.number_of_nodes()
+    for node_neighbor in G.neighbors(node_id):
+        node_deg = G.degree[node_neighbor]
+        r1 += beta * r0/node_deg + (1 - beta)/N 
+    
+    return round(r1,2) 
+
+beta = 0.8
+r0 = 1 / G.number_of_nodes()
+node = 0
+
 num_nodes = G.number_of_nodes()
 num_edges = G.number_of_edges()
 average_degree = avg_degree(num_nodes, num_edges)
 avg_cluster_coef = avg_coefficient(G)
+iter_pagerank = one_iter_pagerank(G, beta, r0, node)
+
 print(average_degree)
 print(avg_cluster_coef)
+print(iter_pagerank)
