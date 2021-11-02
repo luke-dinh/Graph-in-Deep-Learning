@@ -31,7 +31,16 @@ def one_iter_pagerank(G, beta, r0, node_id):
     
     return round(r1,2) 
 
-# 
+# Raw closeness centrality
+def closeness_centrality(G, node=5):
+
+    closeness = 0
+    total_shortest = 0
+    for path in list(nx.single_source_shortest_path(G, node).values())[1:]:
+        total_shortest += len(path) - 1
+
+    closeness += 1 /total_shortest
+    return round(closeness, 2)
 
 beta = 0.8
 r0 = 1 / G.number_of_nodes()
@@ -42,7 +51,9 @@ num_edges = G.number_of_edges()
 average_degree = avg_degree(num_nodes, num_edges)
 avg_cluster_coef = avg_coefficient(G)
 iter_pagerank = one_iter_pagerank(G, beta, r0, node)
+avg_shortest = closeness_centrality(G, node=5)
 
 print(average_degree)
 print(avg_cluster_coef)
 print(iter_pagerank)
+print(avg_shortest)
