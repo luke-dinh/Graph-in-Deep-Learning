@@ -1,2 +1,3 @@
 networkx
 pickle5
+torch-geometric
