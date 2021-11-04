@@ -110,3 +110,9 @@ sigmoid = nn.Sigmoid()
 pos_edge_index = edge_list_to_tensor(graph_to_edge_list(G))
 neg_edge_index = edge_list_to_tensor(sample_negative_edges(G, len(graph_to_edge_list(G))))
 
+# Generate the positive and negative labels
+pos_label = torch.ones(pos_edge_index.shape[1], )
+neg_label = torch.zeros(neg_edge_index.shape[1], )
+
+# Concat positive and negative labels into one tensor
+train_label = torch.cat([pos_label, neg_label], dim=0)
