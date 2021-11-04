@@ -107,4 +107,6 @@ def train(emb, loss_fn, sigmoid, train_label, train_edge):
 loss_fn = nn.BCELoss()
 sigmoid = nn.Sigmoid()
 
-print()
+pos_edge_index = edge_list_to_tensor(graph_to_edge_list(G))
+neg_edge_index = edge_list_to_tensor(sample_negative_edges(G, len(graph_to_edge_list(G))))
+

@@ -19,8 +19,8 @@ def edge_list_to_tensor(edge_list):
 
     return edge_index 
 
-edge_list = graph_to_edge_list(G)
-edge_index = edge_list_to_tensor(edge_list)
+# edge_list = graph_to_edge_list(G)
+# edge_index = edge_list_to_tensor(edge_list)
 
 # Negative edges
 def sample_negative_edges(G, num_neg_samples):
@@ -49,24 +49,24 @@ def sample_negative_edges(G, num_neg_samples):
             if len(neg_edge_list) == num_neg_samples:
                 return neg_edge_list
 
-# Sample 78 negative edges
-neg_edge_list = sample_negative_edges(G, len(edge_list))
+# # Sample 78 negative edges
+# neg_edge_list = sample_negative_edges(G, len(edge_list))
 
 # Transform the negative edge list to tensor
-neg_edge_index = edge_list_to_tensor(neg_edge_list)
-print("The neg_edge_index tensor has shape {}".format(neg_edge_index.shape))
+# neg_edge_index = edge_list_to_tensor(neg_edge_list)
+# print("The neg_edge_index tensor has shape {}".format(neg_edge_index.shape))
 
-def is_neg_edge(edge):
-    return not(edge in edge_list or (edge[1], edge[0]) in edge_list)
+# def is_neg_edge(edge):
+#     return not(edge in edge_list or (edge[1], edge[0]) in edge_list)
 
-edge_1 = (7, 1)
-edge_2 = (1, 33)
-edge_3 = (33, 22)
-edge_4 = (0, 4)
-edge_5 = (4, 2)
+# edge_1 = (7, 1)
+# edge_2 = (1, 33)
+# edge_3 = (33, 22)
+# edge_4 = (0, 4)
+# edge_5 = (4, 2)
 
-print(is_neg_edge(edge_1))
-print(is_neg_edge(edge_2))
-print(is_neg_edge(edge_3))
-print(is_neg_edge(edge_4))
-print(is_neg_edge(edge_5))
+# print(is_neg_edge(edge_1))
+# print(is_neg_edge(edge_2))
+# print(is_neg_edge(edge_3))
+# print(is_neg_edge(edge_4))
+# print(is_neg_edge(edge_5))
