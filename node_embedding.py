@@ -86,7 +86,7 @@ def train(emb, loss_fn, sigmoid, train_label, train_edge):
     emb_v = emb(train_edge)[1]
 
     # Sum of dot product the embeddings of the nodes in train_edge
-    dot_product = torch.sum(np.dot(emb_u, emb_v), dim=-1)
+    dot_product = torch.sum(emb_u * emb_v, dim=-1)
 
     # Feed the dot product into sigmoid function
     sig = sigmoid(dot_product)
@@ -96,8 +96,8 @@ def train(emb, loss_fn, sigmoid, train_label, train_edge):
 
     # Print both loss and acc of each epoch
 
-    print("Loss for epoch {i} : {}".format(loss))
-    print("Accuracy for epoch {i} is: {}".format(accuracy(sig, train_label)))
+    print("Loss for epoch {} : ".format(i), loss)
+    print("Accuracy for epoch {} is: ".format(i), accuracy(sig, train_label))
 
     # Update the embeddings
 
@@ -116,3 +116,10 @@ neg_label = torch.zeros(neg_edge_index.shape[1], )
 
 # Concat positive and negative labels into one tensor
 train_label = torch.cat([pos_label, neg_label], dim=0)
+
+# Concat positive and negative edges into one tensor
+# Since the network is very small, we do not split the edges into val/test sets
+train_edge = torch.cat([pos_edge_index, neg_edge_index], dim=1)
+
+# Train the embeddinng
+train(emb, loss_fn, sigmoid, train_label, train_edge)
