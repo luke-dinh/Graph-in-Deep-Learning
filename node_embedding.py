@@ -35,31 +35,6 @@ print("Embedding: {}".format(emb))
 # Gets the embedding from node 0 and 3
 print(emb(ids))
 
-# # Visualize node embeddings
-# def visualize_emb(emb):
-#   X = emb.weight.data.numpy()
-#   pca = PCA(n_components=2)
-#   components = pca.fit_transform(X)
-#   plt.figure(figsize=(6, 6))
-#   club1_x = []
-#   club1_y = []
-#   club2_x = []
-#   club2_y = []
-#   for node in G.nodes(data=True):
-#     if node[1]['club'] == 'Mr. Hi':
-#       club1_x.append(components[node[0]][0])
-#       club1_y.append(components[node[0]][1])
-#     else:
-#       club2_x.append(components[node[0]][0])
-#       club2_y.append(components[node[0]][1])
-#   plt.scatter(club1_x, club1_y, color="red", label="Mr. Hi")
-#   plt.scatter(club2_x, club2_y, color="blue", label="Officer")
-#   plt.legend()
-#   plt.show()
-
-# # Visualize the initial random embeddding
-# visualize_emb(emb)
-
 # Training the Embedding
 
 def accuracy(pred, label):
@@ -74,7 +49,7 @@ def accuracy(pred, label):
 
 def train(emb, loss_fn, sigmoid, train_label, train_edge):
 
-  epochs = 100
+  epochs = 500
   learning_rate = 0.1
 
   optimizer = SGD(emb.parameters(), lr=learning_rate, momentum=0.9)
@@ -123,3 +98,27 @@ train_edge = torch.cat([pos_edge_index, neg_edge_index], dim=1)
 
 # Train the embeddinng
 train(emb, loss_fn, sigmoid, train_label, train_edge)
+
+# Visualize node embeddings
+def visualize_emb(emb):
+  X = emb.weight.data.numpy()
+  pca = PCA(n_components=2)
+  components = pca.fit_transform(X)
+  plt.figure(figsize=(6, 6))
+  club1_x = []
+  club1_y = []
+  club2_x = []
+  club2_y = []
+  for node in G.nodes(data=True):
+    if node[1]['club'] == 'Mr. Hi':
+      club1_x.append(components[node[0]][0])
+      club1_y.append(components[node[0]][1])
+    else:
+      club2_x.append(components[node[0]][0])
+      club2_y.append(components[node[0]][1])
+  plt.scatter(club1_x, club1_y, color="red", label="Mr. Hi")
+  plt.scatter(club2_x, club2_y, color="blue", label="Officer")
+  plt.legend()
+  plt.show()
+
+visualize_emb(emb)
