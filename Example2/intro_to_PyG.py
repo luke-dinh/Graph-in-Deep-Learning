@@ -33,8 +33,28 @@ def get_num_features(pyg_dataset):
 
     return num_features
 
-num_classes = get_num_classes(pyg_dataset)
-num_features = get_num_features(pyg_dataset)
+# Get the label of the graph with index 100 
 
-print("Number of classes: {}".format(num_classes))
-print("Number of features: {}".format(num_features))
+def get_graph_class(pyg_dataset, idx):
+
+    label = pyg_dataset[idx].y
+
+    return label 
+
+# graph_0 = pyg_dataset[0]
+# print(graph_0)
+# idx = 100
+# label = get_graph_class(pyg_dataset, idx)
+# print('Graph with index {} has label {}'.format(idx, label))
+
+# Analyzing the graph with index i in dataset
+
+def get_graph_num_edges(pyg_dataset, idx):
+
+    num_edges = pyg_dataset[idx].num_edges
+
+    return num_edges
+
+idx = 200
+num_edges = get_graph_num_edges(pyg_dataset, idx)
+print('Graph with index {} has {} edges'.format(idx, num_edges))
