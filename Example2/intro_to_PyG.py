@@ -41,12 +41,6 @@ def get_graph_class(pyg_dataset, idx):
 
     return label 
 
-# graph_0 = pyg_dataset[0]
-# print(graph_0)
-# idx = 100
-# label = get_graph_class(pyg_dataset, idx)
-# print('Graph with index {} has label {}'.format(idx, label))
-
 # Analyzing the graph with index i in dataset
 
 def get_graph_num_edges(pyg_dataset, idx):
@@ -54,7 +48,3 @@ def get_graph_num_edges(pyg_dataset, idx):
     num_edges = pyg_dataset[idx].num_edges
 
     return num_edges
-
-idx = 200
-num_edges = get_graph_num_edges(pyg_dataset, idx)
-print('Graph with index {} has {} edges'.format(idx, num_edges))
