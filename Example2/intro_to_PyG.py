@@ -16,3 +16,25 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
     # 600 graphs in this dataset
     print(pyg_dataset)
+
+# Analyzing the dataset
+
+def get_num_classes(pyg_dataset):
+
+    num_classes = 0
+    num_classes += pyg_dataset.num_classes
+
+    return num_classes
+
+def get_num_features(pyg_dataset):
+
+    num_features = 0
+    num_features += pyg_dataset.num_features
+
+    return num_features
+
+num_classes = get_num_classes(pyg_dataset)
+num_features = get_num_features(pyg_dataset)
+
+print("Number of classes: {}".format(num_classes))
+print("Number of features: {}".format(num_features))
