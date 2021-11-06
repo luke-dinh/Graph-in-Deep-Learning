@@ -5,6 +5,8 @@ from sklearn.decomposition import PCA
 from torch.nn.modules.activation import Sigmoid
 from torch.optim import SGD
 
+import sys 
+sys.path.append('Graph-in-Deep-Learning/Example1')
 from graph_to_tensor import *
 
 G = nx.karate_club_graph()
