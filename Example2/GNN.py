@@ -78,3 +78,22 @@ class GCN(torch.nn.Module):
                 x = F.dropout(x, p = self.dropout, training=self.training)
 
         return out 
+
+def train(model, data, train_idx, optimizer, loss_fn):
+
+    model.train()
+
+    # Zero grad the optimizer
+    optimizer.zero_grad()
+
+    # Feed the data into the model
+    out = model(data.x, data.adj_t)
+
+    # Slice the model output and label by train_idx and feed the sliced output into loss function
+    loss = loss_fn(out[train_idx], data.y[train_idx].squeeze(1))
+
+    # Update params
+    loss.backward()
+    optimizer.step()
+
+    return loss.item()
