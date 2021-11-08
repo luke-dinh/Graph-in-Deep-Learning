@@ -59,4 +59,22 @@ class GCN(torch.nn.Module):
             bn.reset_parameters()
 
     # Feed forward
+    def forward(self, adj_t, x):
 
+        for i in range(self.num_layers):
+
+            # Last conv layers in the figure
+            if (i == self.num_layers - 1):
+                x = self.convs[i](x, adj_t)
+                if (self.return_embeds):
+                    return x
+                out = self.softmax(x)
+            
+            # Other layers in the network
+            else:
+                x = self.convs[i](x, adj_t)
+                x = self.batch_norm[i](x)
+                x = F.relu(x)
+                x = F.dropout(x, p = self.dropout, training=self.training)
+
+        return out 
