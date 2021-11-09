@@ -2,6 +2,7 @@ import torch
 import pandas as pd
 import torch.nn.functional as F
 import torch.nn as nn
+import numpy as np
 
 from torch_geometric.nn import GCNConv
 
@@ -10,6 +11,8 @@ class GCN(torch.nn.Module):
                     dropout, return_embeds = False):
 
         super(GCN, self).__init__()
+        self.num_layers = num_layers
+        self.return_embeds = return_embeds
 
         # GCN_Convs layers
         self.convs = nn.ModuleList([GCNConv(input_dim, hidden_dim)])
@@ -35,23 +38,15 @@ class GCN(torch.nn.Module):
             bn.reset_parameters()
 
     # Feed forward
-    def forward(self, adj_t, x):
+    def forward(self, x, adj_t):
 
-        for i in range(self.num_layers):
-
-            # Last conv layers in the figure
-            if (i == self.num_layers - 1):
-                x = self.convs[i](x, adj_t)
-                if (self.return_embeds):
-                    return x
-                out = self.softmax(x)
-            
-            # Other layers in the network
-            else:
-                x = self.convs[i](x, adj_t)
-                x = self.batch_norm[i](x)
-                x = F.relu(x)
-                x = F.dropout(x, p = self.dropout, training=self.training)
+        for conv, bn in zip(self.convs[:-1], self.batch_norm):
+            x1 = F.relu(bn(conv(x, adj_t)))
+            if self.training:
+                x1 = F.dropout(x1, p=self.dropout)
+            x = x1
+        x = self.convs[-1](x, adj_t)
+        out = x if self.return_embeds else self.softmax(x)
 
         return out 
 
