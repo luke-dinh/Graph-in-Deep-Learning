@@ -1,7 +1,7 @@
 import os
 import copy
 import sys
-sys.path.append('Example2')
+sys.path.append('.')
 
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
 import torch_geometric.transforms as T
