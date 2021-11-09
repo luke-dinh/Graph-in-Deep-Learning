@@ -1,11 +1,11 @@
+import os
+import copy
 import sys
 sys.path.append('Example2')
 
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
 import torch_geometric.transforms as T
 from Example2.GNN import *
-import copy
-import os 
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
 
