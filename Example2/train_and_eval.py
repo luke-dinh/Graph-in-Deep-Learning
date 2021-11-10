@@ -5,7 +5,7 @@ sys.path.append('.')
 
 from ogb.nodeproppred import PygNodePropPredDataset, Evaluator
 import torch_geometric.transforms as T
-from Example2.GNN import *
+from Example2.GNN_Node_Classify import *
 
 if 'IS_GRADESCOPE_ENV' not in os.environ:
 
