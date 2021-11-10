@@ -1,4 +1,5 @@
 import tqdm
+import pandas as pd
 import sys
 sys.path.append('.')
 from Example2.GNN_Node_Classify import GCN
