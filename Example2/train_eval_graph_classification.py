@@ -1,6 +1,4 @@
 import sys
-
-from torch.utils.data.dataset import Dataset
 sys.path.append('.')
 
 import os
