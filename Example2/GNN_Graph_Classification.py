@@ -27,7 +27,7 @@ class GCN_Graph(nn.Module):
         # Output layer
         self.linear = nn.Linear(hidden_dim, output_dim)
 
-    def reste_parameters(self):
+    def reset_parameters(self):
         self.gnn_node.reset_parameters()
         self.linear.reset_parameters()
 
