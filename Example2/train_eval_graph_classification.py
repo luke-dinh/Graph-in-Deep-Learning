@@ -43,7 +43,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
     # Loss and optimizer
     loss_fn = nn.BCEWithLogitsLoss()
-    optimizer = torch.optim.Adam(model.parameters, lr=args['lr'])
+    optimizer = torch.optim.Adam(model.parameters(), lr=args['lr'])
 
     # Training
     best_model = None

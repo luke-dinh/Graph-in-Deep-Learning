@@ -1,4 +1,4 @@
-import tqdm
+import tqdm 
 import pandas as pd
 import sys
 sys.path.append('.')
@@ -22,7 +22,7 @@ class GCN_Graph(nn.Module):
                             num_layers, dropout, return_embeds=True)
 
         # Initialize pooling layer as a global mean pooling layer
-        self.pool_layer = global_mean_pool()
+        self.pool_layer = global_mean_pool
 
         # Output layer
         self.linear = nn.Linear(hidden_dim, output_dim)
@@ -49,7 +49,7 @@ def train(model, device, data_loader, optimizer, loss_fn):
     model.train()
     loss = 0
 
-    for step, batch in enumerate(tqdm(data_loader, desc='Iteration')):
+    for step, batch in enumerate(tqdm.tqdm(data_loader, desc='Iteration')):
         batch = batch.to(device)
 
         if batch.x.shape[0] == 1 or batch.batch[-1] == 0:
@@ -81,7 +81,7 @@ def eval(model, device, loader, evaluator, save_model_results=False, save_file=N
     y_true = []
     y_pred = []
 
-    for step, batch in enumerate(tqdm(loader, desc="Iteration")):
+    for step, batch in enumerate(tqdm.tqdm(loader, desc="Iteration")):
         batch = batch.to(device)
 
         if batch.x.shape[0] == 1:
