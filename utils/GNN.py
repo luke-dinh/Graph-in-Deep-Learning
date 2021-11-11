@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch_geometric.nn import GCNConv
 
 class GCN(torch.nn.Module):
@@ -22,3 +23,25 @@ class GCN(torch.nn.Module):
 
         # Define the log max 
         self.log_max = nn.LogSoftmax(dim=-1)
+
+    def reset_parameters(self):
+        for conv in self.convs:
+            conv.reset_parameters()
+        for bn in self.batch_norm:
+            bn.reset_parameters()
+
+    # Feed forward
+    def forward(self, x, adj_t):
+
+        for conv, bn in zip(self.convs[:-1], self.batch_norm):
+            x1 = F.relu(bn(conv(x, adj_t)))
+            if self.training:
+                x1 = F.dropout(x1, p=self.dropout)
+            x = x1 
+        x = self.convs[-1](x, adj_t)
+
+        out = x if self.return_embeds else self.log_max(x)
+
+        return out
+
+        
