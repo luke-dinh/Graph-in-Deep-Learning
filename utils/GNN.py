@@ -1,3 +1,5 @@
+import pandas as pd
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -44,4 +46,61 @@ class GCN(torch.nn.Module):
 
         return out
 
-        
+class train_and_eval():
+
+    def train(model, data, train_idx, optimizer, loss_fn):
+
+        # Set the model to train mode
+        model.train()
+
+        # Zero grad the optimizer
+        optimizer.zero_grad()
+
+        # Feed the data into the model
+        out = model(data.x, data.adj_t)
+
+        # Load the output to loss funtion
+        loss = loss_fn(out[train_idx], data.y[train_idx].squeeze(1))
+
+        # Update loss and optimizer
+        loss.backward()
+        optimizer.step()
+
+        return loss.item()
+
+    def eval(model, data, split_idx, evaluator, save_model_results=False):
+
+        with torch.no_grad():
+
+            # Set the model to eval mode
+            model.eval()
+
+            # Load the data to model
+            out = model(data.x, data.adj_t)
+            y_pred = out.argmax(dim=-1, keepdim=True) 
+
+            train_acc = evaluator.eval({
+                    'y_true': data.y[split_idx['train']],
+                    'y_pred': y_pred[split_idx['train']],
+            })['acc']
+            valid_acc = evaluator.eval({
+                    'y_true': data.y[split_idx['valid']],
+                    'y_pred': y_pred[split_idx['valid']],
+            })['acc']
+            test_acc = evaluator.eval({
+                    'y_true': data.y[split_idx['test']],
+                    'y_pred': y_pred[split_idx['test']],
+            })['acc']
+
+            if save_model_results:
+                print ("Saving Model Predictions")
+
+                data = {}
+                data['y_pred'] = y_pred.view(-1).cpu().detach().numpy()
+
+                df = pd.DataFrame(data=data)
+                # Save locally as csv
+                df.to_csv('ogbn-arxiv_node.csv', sep=',', index=False)
+
+
+            return train_acc, valid_acc, test_acc
