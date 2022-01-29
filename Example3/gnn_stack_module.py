@@ -98,3 +98,15 @@ class GraphSage(MessagePassing):
             out = F.normalize(out, p=2)
 
         return out
+
+    def message(self, x_j):
+
+        out = x_j
+        return x_j
+
+    def aggregate(self, inputs, index, dim_size=None):
+
+        node_dim = self.node_dim
+        out = torch_scatter.scatter(inputs, index, node_dim, dim_size=dim_size, reduce='mean')
+
+        return out
