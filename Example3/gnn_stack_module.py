@@ -68,3 +68,33 @@ class GNN_stack(nn.Module):
     # Loss
     def loss(self, pred, label):
         return F.nll_loss(pred, label)
+
+class GraphSage(MessagePassing):
+
+    def __init__(self, in_channels, out_channels, normalize=True, bias=False, **kwargs):
+
+        super(GraphSage, self).__init__(**kwargs)
+
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.normalize = normalize
+
+        # Layers needed for the message
+        self.lin_l = nn.Linear(self.in_channels, self.out_channels)
+        self.lin_r = nn.Linear(self.in_channels, self.out_channels)
+
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        self.lin_l.reset_parameters()
+        self.lin_r.reset_parameters()
+
+    def forward(self, x, edge_index, size=None):
+
+        prop = self.propagate(edge_index, x=(x,x), size=size)
+        out = self.lin_l(x) + self.lin_r(prop)
+
+        if self.normalize:
+            out = F.normalize(out, p=2)
+
+        return out
