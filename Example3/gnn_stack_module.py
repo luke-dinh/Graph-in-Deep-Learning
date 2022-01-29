@@ -52,6 +52,7 @@ class GNN_stack(nn.Module):
 
         x, edge_index, batch = data.x, data.edge_index, data.batch
 
+        # Feed Forward
         for i in range(self.num_layers):
             x = self.convs[i](x, edge_index)
             x = F.relu(x)
@@ -64,5 +65,6 @@ class GNN_stack(nn.Module):
 
         return F.log_softmax(x, dim=1)
 
+    # Loss
     def loss(self, pred, label):
         return F.nll_loss(pred, label)
