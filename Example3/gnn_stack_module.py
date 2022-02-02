@@ -110,3 +110,35 @@ class GraphSage(MessagePassing):
         out = torch_scatter.scatter(inputs, index, node_dim, dim_size=dim_size, reduce='mean')
 
         return out
+
+class GAT(MessagePassing):
+
+    def __init__(self, in_channels, out_channels, heads=2, 
+                    negative_slope=0.2, dropout=0., **kwargs):
+
+        super(GAT, self).__init__(node_dim=0, **kwargs)
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.heads = heads
+        self.negative_slope = negative_slope
+        self.dropout = dropout
+
+        # Layers needed for the message functions
+        self.lin_l = nn.Linear(self.in_channels, self.out_channels, self.heads)
+        self.lin_r = self.lin_l
+
+        # Define the attention parameters \overrightarrow{a_l/r}^T
+        self.att_l = nn.Parameter(torch.zeros(self.heads, self.out_channels))
+        self.att_r = nn.Parameter(torch.zeros(self.heads, self.out_channels))
+
+        self.reset_parameters_2()
+
+        # Reset parameters
+    def reset_parameters_2(self):
+
+        nn.init.xavier_uniform_(self.lin_l.weight)
+        nn.init.xavier_uniform_(self.lin_r.weight)
+        nn.init.xavier_uniform_(self.att_l)
+        nn.init.xavier_uniform_(self.att_r)
+
+        
