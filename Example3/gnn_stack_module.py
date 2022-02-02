@@ -141,4 +141,19 @@ class GAT(MessagePassing):
         nn.init.xavier_uniform_(self.att_l)
         nn.init.xavier_uniform_(self.att_r)
 
+    def forward(self, x, edge_index, size=None):
+
+        H, C = self.heads, self.out_channels
+
+        x_l = self.lin_l.reshape(-1, H, C)
+        x_r = self.lin_r.reshape(-1, H, C)
+
+        alpha_l = self.att_l * x_l
+        alpha_r = self.att_r * x_r
+
+        out = self.propagate(edge_index, x=(x_l, x_r), alpha=(alpha_l, alpha_r), size=size).reshape(-1, H*C)
+
+        return out
+
+    
         
