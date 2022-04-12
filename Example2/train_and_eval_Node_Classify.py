@@ -65,7 +65,7 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
     for epoch in range(1, 1 + args["epochs"]):
         loss = train(model, data, train_idx, optimizer, loss_fn)
         result = test(model, data, split_idx, evaluator)
-        train_acc, valid_acc, test_acc = result
+        train_acc, valid_acc, test_acc, out = result
         if valid_acc > best_valid_acc:
             best_valid_acc = valid_acc
             best_model = copy.deepcopy(model)
@@ -74,3 +74,5 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
               f'Train: {100 * train_acc:.2f}%, '
               f'Valid: {100 * valid_acc:.2f}% '
               f'Test: {100 * test_acc:.2f}%')
+
+        np.save(out, os.path.join(graph_emb_path, '{}.npy'.format(str(epoch))))
