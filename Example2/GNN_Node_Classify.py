@@ -105,4 +105,4 @@ def test(model, data, split_idx, evaluator, save_model_results=False):
       df.to_csv('ogbn-arxiv_node.csv', sep=',', index=False)
 
 
-    return train_acc, valid_acc, test_acc
+    return train_acc, valid_acc, test_acc, out 
