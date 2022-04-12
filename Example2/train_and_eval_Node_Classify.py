@@ -1,5 +1,6 @@
 import os
 import copy
+import numpy as np
 import sys
 sys.path.append('.')
 
@@ -56,6 +57,10 @@ if 'IS_GRADESCOPE_ENV' not in os.environ:
 
     best_model = None
     best_valid_acc = 0
+
+    graph_emb_path = 'grapg_emb'
+    if not os.path.exists(graph_emb_path):
+        os.makedirs(graph_emb_path)
 
     for epoch in range(1, 1 + args["epochs"]):
         loss = train(model, data, train_idx, optimizer, loss_fn)
